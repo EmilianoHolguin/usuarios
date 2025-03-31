@@ -120,7 +120,7 @@ export const DeleteUser = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { userName, password } = req.body;
-        const KEY = process.env.SECRET_KEY;
+        const KEY = 'aJksd9QzPl+sVdK7vYc/L4dK8HgQmPpQ5K9yApUsj3w=';
 
         const user = await User.findOne({ where: { userName, password } });
 

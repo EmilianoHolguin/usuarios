@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { Sequelize } from "sequelize";
+import User from '../models/User_Model.js';
 dotenv.config();
 const sequelize = new Sequelize(
     process.env.DB_NAME,
@@ -12,8 +13,19 @@ const sequelize = new Sequelize(
         logging: false,
     }
 );
-sequelize.authenticate()
-    .then(() => console.log('conexion con exito'))
-    .catch(err => console.error('no se pudo conectar', err));
+
+const initDB = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log("Conexión exitosa a la base de datos");
+        await User.sync({ alter: true });
+        console.log("Tabla 'users' sincronizada correctamente");
+    } catch (err) {
+        console.error("Error en la conexión a la base de datos:", err);
+        process.exit(1); // Detener la aplicación si la conexión falla
+    }
+};
+
+initDB();
 
 export default sequelize;
